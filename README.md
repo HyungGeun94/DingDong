@@ -35,10 +35,10 @@
 ## 구현 화면
 
 
-<img src="https://github.com/HyungGeun94/DingDong/assets/152036928/b7583708-a3ca-4867-87fa-8aa154602849" width="500" height="300">
-<img src="https://github.com/HyungGeun94/DingDong/assets/152036928/66988f61-5fef-4854-8597-de9b14b77eae" width="500" height="300">
-<img src="https://github.com/HyungGeun94/DingDong/assets/152036928/1289aff2-d057-4620-96ef-55a1b6a57bc7" width="500" height="300">
-<img src="https://github.com/HyungGeun94/DingDong/assets/152036928/32171336-7116-4183-91f1-13d10d778103" width="500" height="300">
+<img src="https://github.com/HyungGeun94/DingDong/assets/152036928/b7583708-a3ca-4867-87fa-8aa154602849" width="400" height="300">
+<img src="https://github.com/HyungGeun94/DingDong/assets/152036928/66988f61-5fef-4854-8597-de9b14b77eae" width="400" height="300">
+<img src="https://github.com/HyungGeun94/DingDong/assets/152036928/1289aff2-d057-4620-96ef-55a1b6a57bc7" width="400" height="300">
+<img src="https://github.com/HyungGeun94/DingDong/assets/152036928/32171336-7116-4183-91f1-13d10d778103" width="400" height="300">
 
 
 ---
