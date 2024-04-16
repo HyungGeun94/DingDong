@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.dingdong.communityGoodMapper">
+
+    <select id="goodcheck" parameterType="kr.co.dingdong.domain.CommunityGoodDTO" resultType="int" >
+
+        select count(*) from community_good where board_num=#{boardNum} and id=#{id}
+
+
+
+    </select>
+
+    <insert id="likeUp" parameterType="kr.co.dingdong.domain.CommunityGoodDTO" >
+
+        insert into community_good ( board_num, id, good)
+        values (#{boardNum},#{id},1);
+
+    </insert>
+
+    <delete id="likeDown">
+
+        delete from community_good where board_num = #{boardNum} and id = #{id}
+
+
+    </delete>
+
+
+
+
+</mapper>

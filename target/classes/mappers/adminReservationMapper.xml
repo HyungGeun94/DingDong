@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.dingdong.mappers.adminReservationMapper">
+
+
+	<select id="listAll" resultType="Reservation">
+		SELECT * 
+		FROM reservation
+		ORDER BY date DESC
+	</select>
+	
+	
+	<select id="delList" resultType="Reservation">
+		SELECT * 
+		FROM reservation
+		WHERE del=1
+		ORDER BY date DESC
+	</select>
+	
+	<!-- <update id="multiCancel" parameterType="java.util.List">
+		<foreach collection="list" item="reservationNumber" separator=";">
+			UPDATE reservation
+			SET del = 1
+			WHERE reservation_number = #{reservationNumber}
+		</foreach>
+		
+	</update>  -->
+
+</mapper>

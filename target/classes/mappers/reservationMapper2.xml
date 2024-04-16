@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.dingdong.mappers.reservationMapper2">
+
+
+<insert id="insert" parameterType="Reservation">
+	INSERT INTO reservation
+	(reservation_number, studyroom_number, room_number, member_id, name, phone, date, reservation_date, start, end, party, cost, pay_with, state, email)
+	VALUES (#{reservationNumber}, #{studyroomNumber}, #{roomNumber}, #{memberId}, #{name}, #{phone}, now(), #{reservationDate}, #{start}, #{end}, #{party}, #{cost}, #{payWith}, 1, #{email});
+	
+</insert>
+
+<select id="selectOne" parameterType="java.lang.String" resultType="Reservation">
+	SELECT reservation_number, member_id, name, phone, date, reservation_date, start, end, cost, party, pay_with, state
+	FROM reservation
+	WHERE reservation_number = #{reservationNumber}
+</select>
+
+<select id="findById" parameterType="java.lang.String" resultType="Reservation">
+	SELECT *
+	FROM reservation
+	WHERE member_id=#{memberId}
+	ORDER BY reservation_date DESC
+</select>
+
+<update id="update" parameterType="Reservation">
+	UPDATE reservation
+	SET name=#{name}, phone=#{phone}
+	WHERE reservation_number=#{reservationNumber}
+</update>
+
+<select id="delList" resultType="Reservation">
+	SELECT * 
+	FROM reservation
+	WHERE del=1
+</select>
+
+<update id="multiCancel" parameterType="java.util.List">
+	<foreach collection="reservationNumberList" item="reservationNumber" separator=";">
+		UPDATE reservation
+		SET del = 1
+		WHERE reservationNumber = #{reservationNumber}
+	</foreach>
+	
+</update>
+
+<update id="cancel" parameterType="java.lang.String">
+	UPDATE reservation
+	SET del = 1, state = 2
+	WHERE reservation_number = #{reservationNumber}
+</update>
+
+<select id="reservedTime" resultType="ReservedTime" parameterType="java.lang.String">
+	SELECT date, start, end
+	FROM reservation
+</select>
+
+</mapper>

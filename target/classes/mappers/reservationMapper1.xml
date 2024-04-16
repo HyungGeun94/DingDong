@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.dingdong.mappers.reservationMapper1">
+
+<select id="listAll" resultType="Reservation">
+	select * from Reservation
+
+</select>
+
+<select id="detail" parameterType="java.lang.String" resultType="Reservation">
+	select reservation_number, studyroom_number, room_number, member_id, name, phone, email, date, reservation_date, start, end, cost, party, pay_with, state
+	from Reservation
+	where reservation_number = #{reservationNumber}
+</select>
+
+<insert id="insert" parameterType="Reservation">
+	insert into Reservation
+	(reservation_number, studyroom_number, room_number, member_id, name, phone, email, date, reservation_date, start, end, party, cost, pay_with, del, state)
+	values (#{reservationNumber}, #{studyroomNumber}, #{roomNumber}, #{memberId}, #{name}, #{phone}, #{email}, #{date}, #{reservationDate}, #{start}, #{end}, #{party}, #{cost}, #{payWith}, #{del}, #{state})
+</insert>
+
+
+<update id="update" parameterType="Reservation">
+	update Reservation
+	set name=#{name}, phone=#{phone}, email=#{email}
+	where reservation_number=#{reservationNumber}
+</update>
+
+<update id="delete" parameterType="Reservation">
+	update Reservation
+	set del=#{del}
+	where reservation_number=#{reservationNumber}
+</update>
+
+
+
+
+</mapper>

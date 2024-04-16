@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.dingdong.mappers.reservationReviewMapper">
+
+<!-- 전체목록 -->
+<select id="reviewList" parameterType="java.lang.Integer" resultType="ReservationReviewDTO">
+	select v.review_number, v.member_id, v.content, v.score, v.del, v.blind, v.reservation_number, r.reservation_number, r.studyroom_number, r.room_number from review v
+	join reservation r
+	on v.room_number=#{roomNumber} and r.room_number=#{roomNumber}
+</select>
+
+<!-- 선택목록 -->
+<select id="detail" parameterType="int" resultType="ReservationReviewDTO">
+	select v.review_number, v.member_id, v.content, v.score, v.del, v.blind, r.reservation_number, r.studyroom_number, r.room_number, r.state from review v
+	join reservation r
+	on v.member_id=#{memberId} and r.member_id=#{memberId}
+	where v.review_number=#{reviewNumber}
+</select>
+
+<!-- 추가하기 -->
+<insert id="insert" parameterType="ReservationReviewDTO">
+	insert into review(member_id, content, score, del, blind, reservation_number, room_number)
+	values (#{memberId}, #{content}, #{score}, #{del}, #{blind}, #{reservationNumber}, #{roomNumber})
+</insert>
+
+<update id="delete" parameterType="ReservationReviewDTO">
+	update review
+	set del=#{del}
+	where review_number=#{reviewNumber}
+</update>
+
+
+
+</mapper>

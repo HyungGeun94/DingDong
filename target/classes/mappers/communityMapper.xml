@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.dingdong.communityMapper">
+
+<!--    생성(c)-->
+
+    <insert id="insert">
+
+<!--        로컬에서 진행하기 떄문에 한번 써보기 ! -->
+        <selectKey keyProperty="boardNum" resultType="int" order="AFTER">
+            SELECT MAX(board_num) FROM community_board
+        </selectKey>
+
+        insert into community_board (title, content, nickname, id,membership,category)
+
+        values (#{title},#{content},#{nickname},#{id},#{membership},#{category});
+
+    </insert>
+<!--    읽기(r)-->
+
+    <select id="read" resultType="CommunityVO">
+        select board_num, title, content, c.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, c.jjim, shareurl, membership, category, blind, m.profile,m.idx as member_idx from community_board c
+        join member m
+        on c.id = m.id
+        where c.del=0 and c.notice = 0 and c.blind=0 and board_num=#{boardNum}
+    </select>
+
+
+
+<!--    수정(U)-->
+
+<!--    update community_board-->
+<!--    set  title="가나다",nickname="부이"-->
+<!--    where board_num=1;-->
+
+    <update id="update">
+        update community_board
+        set title=#{title},content=#{content},notice=#{notice},edit=1,edit_date=now(),del=#{del},del_date=#{delDate},membership=#{membership},category=#{category}
+        where board_num=#{boardNum}
+    </update>
+
+    <update id="goodPlus">
+        update community_board
+        set good=good+1
+        where board_num=#{goodPlus}
+
+    </update>
+
+    <update id="goodDown">
+        update community_board
+        set good=good-1
+        where board_num=#{goodDown}
+
+    </update>
+
+    <update id="badPlus">
+        update community_board
+        set bad=bad+1
+        where board_num=#{badPlus}
+
+    </update>
+
+    <update id="badDown">
+        update community_board
+        set bad=bad-1
+        where board_num=#{badDown}
+
+    </update>
+
+    <insert id="jjimUp" parameterType="kr.co.dingdong.domain.JjimDTO" >
+
+        insert into community_jjim ( board_num, member_idx, jjim)
+        values (#{boardNum},#{memberIdx},1);
+
+    </insert>
+
+    <update id="jjimCountUp">
+        update community_board
+        set jjim=jjim+1
+        where board_num=#{boardNum}
+
+    </update>
+
+    <update id="jjimCountDown">
+        update community_board
+        set jjim=jjim-1
+        where board_num=#{boardNum}
+
+    </update>
+
+    <delete id="jjimDelete" parameterType="kr.co.dingdong.domain.JjimDTO">
+        delete from community_jjim
+        where board_num = #{boardNum} and member_idx = #{memberIdx}
+    </delete>
+
+<!--    삭제(d)라고 쓰고 업데이트라고 부른다.-->
+    <delete id="delete">
+
+        update community_board
+        set del=1, del_date=now()
+        where board_num=#{boardNum}
+
+    </delete>
+
+
+
+
+<!-- 리스트(L)-->
+
+    <select id="count" parameterType="hashMap" resultType="int">
+
+        select count(board_num) from community_board
+
+        where del=0 and notice=0 and blind=0 and
+
+
+        <if test='searchType.equals("title")'>
+            title like concat('%',#{keyword},'%')
+        </if>
+
+        <if test='searchType.equals("content")'>
+            content like concat('%',#{keyword},'%')
+        </if>
+
+        <if test='searchType.equals("title_content")'>
+            title like concat('%',#{keyword},'%') or content like concat('%',#{keyword},'%')
+        </if>
+
+        <if test='searchType.equals("id")'>
+            id like concat('%',#{keyword},'%')
+        </if>
+
+
+    </select>
+
+<!--    select count(*) from community_board where del=0 or del=1;-->
+
+    <select id="onePage" parameterType="hashMap" resultType="CommunityVO">
+
+        select * from community_board
+        where del=0 and notice=0 and blind=0 and
+
+
+        <if test='searchType.equals("title")'>
+            title like concat('%',#{keyword},'%')
+        </if>
+
+        <if test='searchType.equals("content")'>
+            content like concat('%',#{keyword},'%')
+        </if>
+
+        <if test='searchType.equals("title_content")'>
+            title like concat('%',#{keyword},'%') or content like concat('%',#{keyword},'%')
+        </if>
+
+        <if test='searchType.equals("id")'>
+            id like concat('%',#{keyword},'%')
+        </if>
+				
+        order by board_num desc
+        limit #{displayPost},#{postNum};
+    </select>
+
+    <update id="views">
+        update community_board
+        set views=views+1
+        where board_num=#{boardNum}
+
+    </update>
+
+
+
+	<select id="listAll" resultType="CommunityVO">
+		select board_num, title, content, c.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report,m.idx as memberIdx, jjim, shareurl, membership, category, blind,m.profile, m.profile from community_board c
+		join member m
+		on c.id = m.id
+		where c.del=0 and c.notice = 0 and c.blind=0
+		order by reg_date desc
+        limit 5
+	</select>
+
+    <select id="listAllByviews" resultType="CommunityVO">
+        select board_num, title, content, c.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, jjim, shareurl, membership, category, blind, m.profile, m.idx as member_idx from community_board c
+        join member m
+        on c.id = m.id
+        where c.del=0 and c.notice = 0 and c.blind=0
+        order by views desc
+        limit 5
+    </select>
+
+    <select id="listAllBygood" resultType="CommunityVO">
+        select board_num, title, content, c.nickname, c.id,c.editor, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, jjim, shareurl, membership, category, blind, m.profile, m.idx as member_idx from community_board c
+        join member m
+        on c.id = m.id
+        where c.del=0 and c.notice = 0 and c.blind=0 and c.editor=1 order by reg_date desc
+        limit 5
+    </select>
+
+    <select id="listAllBynotice" resultType="CommunityVO">
+        select board_num, title, content, c.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, jjim, shareurl, membership, category, blind, a.profile from community_board c
+        join admin a
+        on c.id = a.id
+        where c.del=0 and c.notice = 1 and c.blind=0
+        order by reg_date desc
+        limit 5
+    </select>
+
+    <select id="listAllByjjim" resultType="CommunityVO">
+        select board_num, title, content, c.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, jjim, shareurl, membership, category, blind, m.profile, m.idx as member_idx
+        from community_board c
+        join member m
+        on c.id = m.id
+        where c.del=0 and c.notice = 0 and c.blind=0
+        order by jjim desc
+        limit 5;
+    </select>
+
+    <select id="jjimCheck" parameterType="kr.co.dingdong.domain.JjimDTO" resultType="int">
+        select count(*) from community_jjim where member_idx=#{memberIdx} and board_num=#{boardNum}
+
+
+    </select>
+
+    <select id="jjimList" parameterType="int" resultType="kr.co.dingdong.domain.CommunityVO">
+
+
+        select c.title,c.content,c.nickname,c.id,c.reg_date,c.views,c.reply,c.good,c.bad,c.notice,c.edit,c.edit_date,c.del,c.del_date,c.report,
+        c.jjim,c.shareurl,c.membership,c.category,c.blind,c.profile,j.member_idx,j.idx,c.board_num, m.idx as member_idx
+        from community_board c join community_jjim j on c.board_num = j.board_num where c.del=0 and c.notice=0 and c.blind=0 and j.member_idx=#{memberIdx} order by reg_date desc;
+
+    </select>
+
+    <insert id="report" parameterType="kr.co.dingdong.domain.ReportDTO">
+
+        INSERT INTO community_report
+        (board_num, reporter, reportee, context)
+        VALUES (#{boardNum},#{reporter},#{reportee},#{context});
+    </insert>
+
+
+
+    <update id="reportupdate">
+        UPDATE community_board
+        SET	report=report+1
+        WHERE board_num = #{boardNum}
+    </update>
+    
+      <select id="noticeRead" resultType="CommunityVO">
+        select board_num, title, content, a.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, jjim, shareurl, membership, category, blind, a.profile from community_board c
+        join admin a
+        on c.id = a.id
+        where board_num=#{boardNum}
+    </select>
+    
+	<select id="reporterCheck" parameterType="kr.co.dingdong.domain.ReportDTO" resultType="int">
+        select count(*) from community_report where reporter=#{reporter} and board_num=#{boardNum}
+
+    </select>
+
+
+
+
+</mapper>

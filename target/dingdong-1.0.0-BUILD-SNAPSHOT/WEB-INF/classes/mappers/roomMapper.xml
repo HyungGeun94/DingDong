@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.dingdong.mappers.roomMapper">
+ 
+ <!-- room 전체목록 -->	
+	<select id="listAll" resultMap="RoomDTO">
+		select r.studyroom, r.room_number, r.name, r.content from room r
+		join studyroom s
+		on r.studyroom = s.studyroom=#{studyroom}
+		order by r.room_number
+	</select>
+	
+ <!-- roomList  -->	
+	<select id="roomList" resultMap="RoomSelectDTO">
+		select s.studyroom, s.name as name, r.room_number, r.name as name2, r.content from room r
+		join studyroom s
+		on (r.studyroom = #{studyroom} and s.studyroom=#{studyroom}) and r.del=0
+		order by r.room_number
+	</select> 
+	
+ <!-- room 선택목록 -->
+ 	<select id="detail" parameterType="java.lang.Integer" resultMap="RoomDTO">
+		select * from room
+		where room_number=#{roomNumber}
+ 	</select>
+ 	
+ 	
+ <!-- room 추가하기 -->	
+ 	<insert id="insert" parameterType="RoomDTO" >
+ 		insert into room (studyroom, name, min, max, content, cost, del, file_name)
+ 		values(#{studyroom}, #{name}, #{min}, #{max}, #{content}, #{cost}, #{del}, #{fileName})
+ 	</insert>
+ 	
+ <!-- room 수정하기 -->	
+ 	<update id="update" parameterType="RoomDTO">
+ 		update room
+ 		set name=#{name}, min=#{min}, max=#{max}, content=#{content}, cost=#{cost}, del=#{del}, file_name=#{fileName}
+ 		where room_number=#{roomNumber}
+ 	</update>
+ 
+ <!-- room 삭제하기 -->
+ 	<update id="delete" parameterType="RoomDTO">
+ 		update room
+ 		set del=1
+ 		where room_number=#{roomNumber}
+ 	</update>
+ 
+ <!-- 쿼리 결과에 대한 맵핑 변수명 / 컬럼명 -->
+ 	<resultMap type="kr.co.dingdong.domain.RoomDTO" id="RoomDTO">
+ 		<result property="roomNumber" column="room_number" />
+ 		<result property="fileName" column="file_name" />
+	</resultMap>
+ 	<resultMap type="kr.co.dingdong.domain.RoomSelectDTO" id="RoomSelectDTO">
+		<result property="studyName" column="name" />
+		<result property="roomNumber" column="room_number" />
+		<result property="roomName" column="name2" />
+	</resultMap> 
+ 
+ 
+ 
+</mapper>

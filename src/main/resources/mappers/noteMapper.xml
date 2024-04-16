@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.dingdong.mappers.noteMapper">
+
+<insert id="insert" parameterType="Note">
+	INSERT INTO note
+	(sender, receiver, content, date)
+	VALUES (#{sender}, #{receiver}, #{content}, now())
+</insert>
+
+<select id="countNoteRead" parameterType="java.lang.String" resultType="int">
+	SELECT count(idx)
+	FROM note
+	WHERE receiver = #{receiver}
+	AND `read` = 0
+</select>
+
+<select id="listAll" parameterType="java.lang.String" resultType="Note">
+	SELECT idx, sender, receiver, content, date, `read`, del
+	FROM note
+	WHERE receiver = #{receiver}
+	ORDER BY date DESC
+</select>
+</mapper>

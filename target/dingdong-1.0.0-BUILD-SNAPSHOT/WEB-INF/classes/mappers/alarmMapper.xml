@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.dingdong.mappers.alarmMapper">
+
+<insert id="insert" parameterType="Alarm">
+	INSERT INTO alarm
+	(sender, receiver, category, info, date)
+	VALUES (#{sender}, #{receiver}, #{category}, #{info}, now())
+</insert>
+
+<select id="listById" parameterType="java.lang.String" resultType="Alarm">
+	SELECT idx, sender, receiver, category, info, `read`, date
+	FROM alarm
+	WHERE receiver=#{receiver}
+	ORDER BY date DESC
+</select>
+
+<select id="countNotRead" parameterType="java.lang.String" resultType="int">
+	SELECT count(idx)
+	FROM alarm
+	WHERE receiver=#{receiver} AND `read`=0
+</select>
+
+<select id="findByIdx" parameterType="int" resultType="Alarm">
+	SELECT idx, sender, receiver, category, info, `read`, date
+	FROM alarm
+	WHERE idx = #{idx}
+</select>
+
+<update id="read" parameterType="int">
+	UPDATE alarm
+	SET `read` = 1
+	WHERE idx = #{idx}
+</update>
+
+</mapper>

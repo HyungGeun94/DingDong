@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+ 	
+	<settings>
+	    <setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+	
+	<typeAliases>
+ 		<typeAlias alias="Member" type="kr.co.dingdong.domain.Member"/>
+ 		<typeAlias alias="Room" type="kr.co.dingdong.domain.Room"/>
+ 		<typeAlias alias="Reservation" type="kr.co.dingdong.domain.Reservation"/>
+ 		<typeAlias alias="Studyroom" type="kr.co.dingdong.domain.Studyroom"/>
+ 		<typeAlias alias="CommunityBoard" type="kr.co.dingdong.domain.CommunityBoard"/>
+ 		<typeAlias alias="CommunityVO" type="kr.co.dingdong.domain.CommunityVO"/>
+ 		<typeAlias alias="CommunityReplyVO" type="kr.co.dingdong.domain.CommunityReplyVO"/>
+ 		<typeAlias alias="Admin" type="kr.co.dingdong.domain.Admin"/>
+ 		<typeAlias alias="AdminLoginDTO" type="kr.co.dingdong.domain.AdminLoginDTO"/>
+ 		 <typeAlias alias="RoomDTO" type="kr.co.dingdong.domain.RoomDTO"/>
+       <typeAlias alias="StudyRoomDTO" type="kr.co.dingdong.domain.StudyRoomDTO"/>
+       <typeAlias alias="RoomSelectDTO" type="kr.co.dingdong.domain.RoomSelectDTO"/>
+       
+ 		<typeAlias alias="Note" type="kr.co.dingdong.domain.Note"/>
+ 		<typeAlias alias="Alarm" type="kr.co.dingdong.domain.Alarm"/>
+ 		<typeAlias alias="Alarm" type="kr.co.dingdong.domain.Alarm"/>
+		 <typeAlias alias="ReservationReviewDTO" type="kr.co.dingdong.domain.ReservationReviewDTO"/>
+		 <typeAlias alias="ReservedTime" type="kr.co.dingdong.domain.ReservedTime"/>
+ 	</typeAliases>
+ 	
+</configuration>

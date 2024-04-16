@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.dingdong.mappers.adminCommunityMapper">
+
+<select id="listAll" resultType="CommunityBoard">
+	SELECT board_num, category, title, content, m.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, jjim, shareurl, membership, category, blind, m.profile, m.point
+	FROM community_board c
+	JOIN member m 
+	ON c.id = m.id
+	WHERE notice=0
+	ORDER BY board_num DESC
+</select>
+
+<select id="delList" resultType="CommunityBoard">
+	SELECT *
+	FROM community_board
+	WHERE del=1
+	AND notice=0
+	ORDER BY board_num DESC
+</select>
+
+<select id="blindList" resultType="CommunityBoard">
+	SELECT *
+	FROM community_board
+	WHERE blind=1
+	AND notice=0
+	ORDER BY board_num DESC
+</select>
+
+<select id="noticeList" resultType="CommunityBoard">
+	SELECt *
+	FROM community_board
+	WHERE notice=1
+	ORDER BY board_num DESC
+</select>
+
+<insert id="insertNotice" parameterType="CommunityBoard">
+	INSERT INTO community_board
+	(title, content, nickname, id, reg_date, notice)
+	VALUES (#{title}, #{content}, #{nickname}, #{id}, now(), 1)
+</insert>
+
+<update id="multiDelete" parameterType="java.util.List">
+	<foreach collection="list" item="item" separator=";">
+		UPDATE community_board
+		set del = 1, del_date = now()
+		where board_num = #{item}
+	</foreach>
+	
+</update>
+
+
+</mapper>
