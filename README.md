@@ -218,7 +218,8 @@
 
 
 	<select id="listAll" resultType="CommunityVO">
-		select board_num, title, content, c.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, jjim, shareurl, membership, category, blind,m.profile, m.profile from community_board c
+		select board_num, title, content, c.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, jjim, shareurl, membership, category, blind,m.profile, m.profile
+		from community_board c
 		join member m
 		on c.id = m.id
 		where c.del=0 and c.notice = 0 and c.blind=0
@@ -227,7 +228,8 @@
 	</select>
 
     <select id="listAllByviews" resultType="CommunityVO">
-        select board_num, title, content, c.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, jjim, shareurl, membership, category, blind, m.profile, m.idx as member_idx from community_board c
+        select board_num, title, content, c.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, jjim, shareurl, membership, category, blind, m.profile, m.idx as member_idx
+		from community_board c
         join member m
         on c.id = m.id
         where c.del=0 and c.notice = 0 and c.blind=0
@@ -236,7 +238,8 @@
     </select>
 
     <select id="listAllBygood" resultType="CommunityVO">
-        select board_num, title, content, c.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, jjim, shareurl, membership, category, blind, m.profile, m.idx as member_idx from community_board c
+        select board_num, title, content, c.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, jjim, shareurl, membership, category, blind, m.profile, m.idx as member_idx
+		from community_board c
         join member m
         on c.id = m.id
         where c.del=0 and c.notice = 0 and c.blind=0
@@ -245,7 +248,8 @@
     </select>
 
     <select id="listAllBynotice" resultType="CommunityVO">
-        select board_num, title, content, c.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, jjim, shareurl, membership, category, blind, m.profile, m.idx as member_idx from community_board c
+        select board_num, title, content, c.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, jjim, shareurl, membership, category, blind, m.profile, m.idx as member_idx
+		from community_board c
         join member m
         on c.id = m.id
         where c.del=0 and c.notice = 1 and c.blind=0
@@ -264,7 +268,11 @@
 
         select c.title,c.content,c.nickname,c.id,c.reg_date,c.views,c.reply,c.good,c.bad,c.notice,c.edit,c.edit_date,c.del,c.del_date,c.report,
         c.jjim,c.shareurl,c.membership,c.category,c.blind,c.profile,j.member_idx,j.idx,c.board_num, m.idx as member_idx
-        from community_board c join community_jjim j on c.board_num = j.board_num where c.del=0 and c.notice=0 and c.blind=0 and j.member_idx=#{memberIdx} order by reg_date desc;
+        from community_board c
+		join community_jjim j
+		on c.board_num = j.board_num
+		where c.del=0 and c.notice=0 and c.blind=0 and j.member_idx=#{memberIdx}
+		order by reg_date desc;
 
     </select>
 
@@ -284,14 +292,17 @@
     </update>
     
       <select id="noticeRead" resultType="CommunityVO">
-        select board_num, title, content, a.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, jjim, shareurl, membership, category, blind, a.profile from community_board c
+        select board_num, title, content, a.nickname, c.id, c.reg_date, views, reply, good, bad, notice, edit, edit_date, c.del, c.del_date, c.report, jjim, shareurl, membership, category, blind, a.profile
+		from community_board c
         join admin a
         on c.id = a.id
         where board_num=#{boardNum}
     </select>
     
 	<select id="reporterCheck" parameterType="kr.co.dingdong.domain.ReportDTO" resultType="int">
-        select count(*) from community_report where reporter=#{reporter} and board_num=#{boardNum}
+        select count(*)
+		from community_report
+		where reporter=#{reporter} and board_num=#{boardNum}
 
     </select>
 ```
